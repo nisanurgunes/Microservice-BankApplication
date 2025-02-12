@@ -24,7 +24,6 @@ public class BaseEntity {
   private String createdBy;
 
   @LastModifiedDate
-
   @Column(insertable = false)
   private LocalDateTime updatedAt;
 
