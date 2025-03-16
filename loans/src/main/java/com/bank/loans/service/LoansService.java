@@ -12,18 +12,17 @@ import java.util.Random;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 public class LoansService {
 
-  private final LoansRepository loansRepository;
+  private LoansRepository loansRepository;
 
   public void createLoan(String mobileNumber) {
-
     Optional<Loans> optionalLoans = loansRepository.findByMobileNumber(mobileNumber);
     if (optionalLoans.isPresent()) {
       throw new LoanAlreadyExistsException(
-          "Loan already registered with given mobileNumber" + mobileNumber);
+          "Loan already registered with given mobileNumber " + mobileNumber);
     }
     loansRepository.save(createNewLoan(mobileNumber));
   }
@@ -51,7 +50,7 @@ public class LoansService {
   public boolean updateLoan(LoansDto loansDto) {
     Loans loans =
         loansRepository
-            .findByMobileNumber(loansDto.getMobileNumber())
+            .findByLoanNumber(loansDto.getLoanNumber())
             .orElseThrow(
                 () ->
                     new ResourceNotFoundException("Loan", "LoanNumber", loansDto.getLoanNumber()));
@@ -64,8 +63,8 @@ public class LoansService {
     Loans loans =
         loansRepository
             .findByMobileNumber(mobileNumber)
-            .orElseThrow(() -> new ResourceNotFoundException("Loan", "mobileNumver", mobileNumber));
-    loansRepository.save(loans);
+            .orElseThrow(() -> new ResourceNotFoundException("Loan", "mobileNumber", mobileNumber));
+    loansRepository.deleteById(loans.getLoanId());
     return true;
   }
 }

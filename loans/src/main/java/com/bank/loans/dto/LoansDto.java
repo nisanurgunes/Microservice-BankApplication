@@ -5,11 +5,12 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.Data;
+import lombok.*;
 
-@Schema(name = "Loans", description = "Schema to hold Loans information")
+@Schema(name = "Loans", description = "Schema to hold Loan information")
 @Data
 public class LoansDto {
+
   @NotEmpty(message = "Mobile Number can not be a null or empty")
   @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
   @Schema(description = "Mobile Number of Customer", example = "4365327698")
@@ -35,4 +36,52 @@ public class LoansDto {
   @PositiveOrZero(message = "Total outstanding amount should be equal or greater than zero")
   @Schema(description = "Total outstanding amount against a loan", example = "99000")
   private int outstandingAmount;
+
+  public void setLoanNumber(String loanNumber) {
+    this.loanNumber = loanNumber;
+  }
+
+  public String getLoanNumber() {
+    return loanNumber;
+  }
+
+  public String getMobileNumber() {
+    return mobileNumber;
+  }
+
+  public void setMobileNumber(String mobileNumber) {
+    this.mobileNumber = mobileNumber;
+  }
+
+  public String getLoanType() {
+    return loanType;
+  }
+
+  public void setLoanType(String loanType) {
+    this.loanType = loanType;
+  }
+
+  public int getTotalLoan() {
+    return totalLoan;
+  }
+
+  public void setTotalLoan(int totalLoan) {
+    this.totalLoan = totalLoan;
+  }
+
+  public int getAmountPaid() {
+    return amountPaid;
+  }
+
+  public void setAmountPaid(int amountPaid) {
+    this.amountPaid = amountPaid;
+  }
+
+  public int getOutstandingAmount() {
+    return outstandingAmount;
+  }
+
+  public void setOutstandingAmount(int outstandingAmount) {
+    this.outstandingAmount = outstandingAmount;
+  }
 }

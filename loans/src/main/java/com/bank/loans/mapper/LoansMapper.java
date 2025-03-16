@@ -4,6 +4,7 @@ import com.bank.loans.dto.LoansDto;
 import com.bank.loans.entity.Loans;
 
 public class LoansMapper {
+
   public static LoansDto mapToLoansDto(Loans loans, LoansDto loansDto) {
     loansDto.setLoanNumber(loans.getLoanNumber());
     loansDto.setLoanType(loans.getLoanType());

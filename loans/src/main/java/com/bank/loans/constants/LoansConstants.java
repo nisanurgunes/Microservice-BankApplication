@@ -1,6 +1,7 @@
 package com.bank.loans.constants;
 
-public class LoansConstants {
+public final class LoansConstants {
+
   private LoansConstants() {}
 
   public static final String HOME_LOAN = "Home Loan";

@@ -2,12 +2,10 @@ package com.bank.loans.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 @Data
-@AllArgsConstructor
 @Schema(name = "ErrorResponse", description = "Schema to hold error response information")
 public class ErrorResponseDto {
 
@@ -22,4 +20,12 @@ public class ErrorResponseDto {
 
   @Schema(description = "Time representing when the error happened")
   private LocalDateTime errorTime;
+
+  public ErrorResponseDto(
+      String apiPath, HttpStatus errorCode, String errorMessage, LocalDateTime errorTime) {
+    this.apiPath = apiPath;
+    this.errorCode = errorCode;
+    this.errorMessage = errorMessage;
+    this.errorTime = errorTime;
+  }
 }
