@@ -22,13 +22,12 @@ public class Loans extends BaseEntity {
   public Loans() {}
 
   public Loans(
-          String mobileNumber,
-          String loanNumber,
-          String loanType,
-          int totalLoan,
-          int amountPaid,
-          int outstandingAmount
-  ) {
+      String mobileNumber,
+      String loanNumber,
+      String loanType,
+      int totalLoan,
+      int amountPaid,
+      int outstandingAmount) {
     this.mobileNumber = mobileNumber;
     this.loanNumber = loanNumber;
     this.loanType = loanType;
@@ -95,14 +94,24 @@ public class Loans extends BaseEntity {
 
   @Override
   public String toString() {
-    return "Loans{" +
-            "loanId=" + loanId +
-            ", mobileNumber='" + mobileNumber + '\'' +
-            ", loanNumber='" + loanNumber + '\'' +
-            ", loanType='" + loanType + '\'' +
-            ", totalLoan=" + totalLoan +
-            ", amountPaid=" + amountPaid +
-            ", outstandingAmount=" + outstandingAmount +
-            '}';
+    return "Loans{"
+        + "loanId="
+        + loanId
+        + ", mobileNumber='"
+        + mobileNumber
+        + '\''
+        + ", loanNumber='"
+        + loanNumber
+        + '\''
+        + ", loanType='"
+        + loanType
+        + '\''
+        + ", totalLoan="
+        + totalLoan
+        + ", amountPaid="
+        + amountPaid
+        + ", outstandingAmount="
+        + outstandingAmount
+        + '}';
   }
 }

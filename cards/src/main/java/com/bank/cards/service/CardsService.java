@@ -7,7 +7,7 @@ import com.bank.cards.exception.CardAlreadyExistsException;
 import com.bank.cards.exception.ResourceNotFoundException;
 import com.bank.cards.mapper.CardsMapper;
 import com.bank.cards.repository.CardsRepository;
-
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 import lombok.AllArgsConstructor;
@@ -37,9 +37,11 @@ public class CardsService {
     newCard.setTotalLimit(CardsConstants.NEW_CARD_LIMIT);
     newCard.setAmountUsed(0);
     newCard.setAvailableAmount(CardsConstants.NEW_CARD_LIMIT);
+    newCard.setCreatedBy("SYSTEM");
+    newCard.setCreatedAt(LocalDateTime.now());
+
     return newCard;
   }
-
 
   public CardsDto fetchCard(String mobileNumber) {
     Cards cards =
@@ -48,7 +50,6 @@ public class CardsService {
             .orElseThrow(() -> new ResourceNotFoundException("Card", "mobileNumber", mobileNumber));
     return CardsMapper.mapToCardsDto(cards, new CardsDto());
   }
-
 
   public boolean updateCard(CardsDto cardsDto) {
     Cards cards =
@@ -61,7 +62,6 @@ public class CardsService {
     cardsRepository.save(cards);
     return true;
   }
-
 
   public boolean deleteCard(String mobileNumber) {
     Cards cards =
