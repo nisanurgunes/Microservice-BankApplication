@@ -1,0 +1,30 @@
+services:
+  accounts:
+    image: gunesng022/accounts
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  cards:
+    image: gunesng022/cards
+    container_name: cards-ms
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  loans:
+    image: gunesng022/loans
+    container_name: loans-ms
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
