@@ -8,6 +8,8 @@ services:
       resources:
         limits:
           memory: 700m
+    networks:
+      - microsevice-network
 
   cards:
     image: gunesng022/cards
@@ -18,6 +20,8 @@ services:
       resources:
         limits:
           memory: 700m
+    networks:
+      - microsevice-network
 
   loans:
     image: gunesng022/loans
@@ -28,3 +32,9 @@ services:
       resources:
         limits:
           memory: 700m
+    networks:
+      - microsevice-network
+
+networks:
+  microsevice-network:
+    driver: bridge
