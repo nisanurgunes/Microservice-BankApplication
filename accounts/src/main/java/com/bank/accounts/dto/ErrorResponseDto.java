@@ -11,12 +11,8 @@ public class ErrorResponseDto {
   private LocalDateTime timestamp;
   private String details;
 
-  // Parametresiz constructor
-  public ErrorResponseDto() {
-    // Parametresiz constructor işlemleri
-  }
+  public ErrorResponseDto() {}
 
-  // Parametreli constructor (Önerilen güncelleme)
   public ErrorResponseDto(
       String message, HttpStatus status, LocalDateTime timestamp, String details) {
     this.message = message;
@@ -24,6 +20,4 @@ public class ErrorResponseDto {
     this.timestamp = timestamp;
     this.details = details;
   }
-
-  // Getter ve Setter metodları
 }

@@ -11,14 +11,13 @@ import com.bank.accounts.mapper.AccountsMapper;
 import com.bank.accounts.mapper.CustomerMapper;
 import com.bank.accounts.repository.AccountsRepository;
 import com.bank.accounts.repository.CustomerRepository;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccountService  {
+public class AccountService {
 
   private final AccountsRepository accountsRepository;
   private final CustomerRepository customerRepository;
@@ -28,7 +27,6 @@ public class AccountService  {
     this.accountsRepository = accountsRepository;
     this.customerRepository = customerRepository;
   }
-
 
   public void createAccount(CustomerDto customerDto) {
     Customer customer = CustomerMapper.mapToCustomer(customerDto, new Customer());
@@ -59,7 +57,6 @@ public class AccountService  {
     return newAccount;
   }
 
-
   public CustomerDto fetchAccount(String mobileNumber) {
     Customer customer =
         customerRepository
@@ -77,7 +74,6 @@ public class AccountService  {
     customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts, new AccountsDto()));
     return customerDto;
   }
-
 
   public boolean updateAccount(CustomerDto customerDto) {
     boolean isUpdated = false;
@@ -106,7 +102,6 @@ public class AccountService  {
     }
     return isUpdated;
   }
-
 
   public boolean deleteAccount(String mobileNumber) {
     Customer customer =
