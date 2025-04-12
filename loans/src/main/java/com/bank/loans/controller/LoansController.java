@@ -14,8 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -31,16 +29,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(
     path = "/api",
     produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
-@RequiredArgsConstructor
 @Validated
 public class LoansController {
 
-  private LoansService loansService;
-  private LoansContactInfoDto loansContactInfoDto;
-  private Environment environment;
+  private final LoansService loansService;
+  private final LoansContactInfoDto loansContactInfoDto;
+  private final Environment environment;
 
-  @Value("${build.version}")
+  public LoansController(
+      LoansService loansService, LoansContactInfoDto loansContactInfoDto, Environment environment) {
+    this.loansService = loansService;
+    this.loansContactInfoDto = loansContactInfoDto;
+    this.environment = environment;
+  }
+
+  @Value("${build.version:1.0.0-default}")
   private String buildVersion;
 
   @PostMapping("/create")
