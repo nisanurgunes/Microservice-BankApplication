@@ -2,7 +2,7 @@ build:
   version: "2.0"
 
 accounts:
-  message: "Welcome to Microservice accounts related QA APIs "
+  message: "Welcome to Microservice accounts related QA test APIs "
   contactDetails:
     name: "Smitha Ray - QA Lead"
     email: "smitha@miicroservice.com"
