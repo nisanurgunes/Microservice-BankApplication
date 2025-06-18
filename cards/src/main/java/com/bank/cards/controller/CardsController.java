@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
     name = "CRUD REST APIs for Cards in Microservice",
     description = "CRUD REST APIs in Microservice to CREATE, UPDATE, FETCH AND DELETE card details")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(
     path = "/api",
     produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -40,6 +38,13 @@ public class CardsController {
 
   @Value("${build.version:1.0.0-default}")
   private String buildVersion;
+
+  public CardsController(
+      CardsService cardsService, CardsContactInfoDto cardsContactInfoDto, Environment environment) {
+    this.cardsService = cardsService;
+    this.cardsContactInfoDto = cardsContactInfoDto;
+    this.environment = environment;
+  }
 
   @Operation(
       summary = "Create Card REST API",
