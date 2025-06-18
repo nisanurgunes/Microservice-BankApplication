@@ -2,9 +2,9 @@ server:
   port: 8080
 spring:
   application:
-    name: accounts
+    name: "accounts"
   profiles:
-    active: prod
+    active: "prod"
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
@@ -20,9 +20,14 @@ spring:
     show-sql: true
   config:
     import: "optional:configserver:http://localhost:8071/"
-  cloud:
-    config:
-      fail-fast: true
-      retry:
-        initial-interval: 3000
-        max-attempts: 5
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -40,8 +40,7 @@ public class AccountsController {
 
   public AccountsController(
       AccountService accountService,
-      Environment environment,
-      AccountsContactInfoDto accountsContactInfoDto) {
+      Environment environment, AccountsContactInfoDto accountsContactInfoDto) {
     this.accountService = accountService;
     this.environment = environment;
     this.accountsContactInfoDto = accountsContactInfoDto;
