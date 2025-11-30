@@ -11,10 +11,8 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @Getter
 @RefreshScope
 @ConfigurationProperties(prefix = "loans")
-
 public class LoansContactInfoDto {
   private String message;
   private Map<String, String> contactDetails;
   private List<String> onCallSupport;
-
 }

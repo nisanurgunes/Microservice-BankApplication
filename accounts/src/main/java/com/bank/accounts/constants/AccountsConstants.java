@@ -12,7 +12,7 @@ public class AccountsConstants {
   public static final String MESSAGE_200 = "Request processed successfully";
   public static final String STATUS_417 = "417";
   public static final String MESSAGE_417_UPDATE =
-      "Update operation failed. Please try again or contact Dev team";
+      "Update operation failed. Your Account is 'INACTIVE'.Please try again when your accounts is 'ACTIVE' or contact Dev team";
   public static final String MESSAGE_417_DELETE =
       "Delete operation failed. Please try again or contact Dev team";
   public static final String STATUS_500 = "500";

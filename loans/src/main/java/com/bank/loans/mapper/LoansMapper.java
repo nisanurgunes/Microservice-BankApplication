@@ -5,23 +5,24 @@ import com.bank.loans.entity.Loans;
 
 public class LoansMapper {
 
-  public static LoansDto mapToLoansDto(Loans loans, LoansDto loansDto) {
-    loansDto.setLoanNumber(loans.getLoanNumber());
-    loansDto.setLoanType(loans.getLoanType());
-    loansDto.setMobileNumber(loans.getMobileNumber());
-    loansDto.setTotalLoan(loans.getTotalLoan());
-    loansDto.setAmountPaid(loans.getAmountPaid());
-    loansDto.setOutstandingAmount(loans.getOutstandingAmount());
-    return loansDto;
+  public static LoansDto mapToLoansDto(Loans loans) {
+    return new LoansDto(
+        loans.getLoanNumber(),
+        loans.getLoanType().name(),
+        loans.getCustomerMobileNumber(),
+        loans.getTotalLoan(),
+        loans.getAmountPaid(),
+        loans.getOutstandingAmount());
   }
 
-  public static Loans mapToLoans(LoansDto loansDto, Loans loans) {
-    loans.setLoanNumber(loansDto.getLoanNumber());
-    loans.setLoanType(loansDto.getLoanType());
-    loans.setMobileNumber(loansDto.getMobileNumber());
-    loans.setTotalLoan(loansDto.getTotalLoan());
-    loans.setAmountPaid(loansDto.getAmountPaid());
-    loans.setOutstandingAmount(loansDto.getOutstandingAmount());
+  public static Loans mapToLoansEntity(LoansDto loansDto) {
+    Loans loans = new Loans();
+    loans.setLoanNumber(loansDto.loanNumber());
+    loans.setLoanType(Loans.LoanType.valueOf(loans.getLoanType().name()));
+    loans.setCustomerMobileNumber(loansDto.customerMobileNumber());
+    loans.setTotalLoan(loansDto.totalLoan());
+    loans.setAmountPaid(loansDto.amountPaid());
+    loans.setOutstandingAmount(loansDto.outstandingAmount());
     return loans;
   }
 }

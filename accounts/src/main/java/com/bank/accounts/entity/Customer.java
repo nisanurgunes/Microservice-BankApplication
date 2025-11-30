@@ -10,47 +10,50 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 public class Customer extends BaseEntity {
 
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-  @GenericGenerator(name = "native", strategy = "native")
   @Id
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
   @Column(name = "customer_id")
-  private Long customerId;
+  private String customerId;
 
-  private String name;
-  private String email;
+  @Column(name = "customer_name")
+  private String customerName;
 
-  @Column(name = "mobile_number")
-  private String mobileNumber;
+  @Column(name = "customer_email")
+  private String customerEmail;
 
-  public Long getCustomerId() {
+  @Column(name = "customer_mobile_number")
+  private String customerMobileNumber;
+
+  public String getCustomerId() {
     return customerId;
   }
 
-  public void setCustomerId(Long customerId) {
+  public void setCustomerId(String customerId) {
     this.customerId = customerId;
   }
 
   public String getName() {
-    return name;
+    return customerName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setName(String customerName) {
+    this.customerName = customerName;
   }
 
-  public String getEmail() {
-    return email;
+  public String getCustomerEmail() {
+    return customerEmail;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public void setCustomerEmail(String customerEmail) {
+    this.customerEmail = customerEmail;
   }
 
-  public String getMobileNumber() {
-    return mobileNumber;
+  public String getCustomerMobileNumber() {
+    return customerMobileNumber;
   }
 
-  public void setMobileNumber(String mobileNumber) {
-    this.mobileNumber = mobileNumber;
+  public void setCustomerMobileNumber(String customerMobileNumber) {
+    this.customerMobileNumber = customerMobileNumber;
   }
 }

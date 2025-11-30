@@ -1,12 +1,10 @@
 package com.bank.cards.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Schema(name = "Response", description = "Schema to hold successful response information")
 @Data
-@AllArgsConstructor
 public class ResponseDto {
 
   @Schema(description = "Status code in the response")
@@ -15,4 +13,12 @@ public class ResponseDto {
   @Schema(description = "Status message in the response")
   private String statusMsg;
 
+  public ResponseDto() {
+    // no-args constructor (Spring için gerekli)
+  }
+
+  public ResponseDto(String statusCode, String statusMsg) {
+    this.statusCode = statusCode;
+    this.statusMsg = statusMsg;
+  }
 }

@@ -1,14 +1,13 @@
 package com.bank.loans.service;
 
-import com.bank.loans.constants.LoansConstants;
 import com.bank.loans.dto.LoansDto;
 import com.bank.loans.entity.Loans;
-import com.bank.loans.exception.LoanAlreadyExistsException;
 import com.bank.loans.exception.ResourceNotFoundException;
 import com.bank.loans.mapper.LoansMapper;
 import com.bank.loans.repository.LoansRepository;
-import java.util.Optional;
-import java.util.Random;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,52 +17,51 @@ public class LoansService {
 
   private LoansRepository loansRepository;
 
-  public void createLoan(String mobileNumber) {
-    Optional<Loans> optionalLoans = loansRepository.findByMobileNumber(mobileNumber);
-    if (optionalLoans.isPresent()) {
-      throw new LoanAlreadyExistsException(
-          "Loan already registered with given mobileNumber " + mobileNumber);
-    }
-    loansRepository.save(createNewLoan(mobileNumber));
-  }
+  public Loans createNewLoan(String mobileNumber) {
 
-  private Loans createNewLoan(String mobileNumber) {
     Loans newLoan = new Loans();
-    long randomLoanNumber = 100000000000L + new Random().nextInt(900000000);
-    newLoan.setLoanNumber(Long.toString(randomLoanNumber));
-    newLoan.setMobileNumber(mobileNumber);
-    newLoan.setLoanType(LoansConstants.HOME_LOAN);
-    newLoan.setTotalLoan(LoansConstants.NEW_LOAN_LIMIT);
-    newLoan.setAmountPaid(0);
-    newLoan.setOutstandingAmount(LoansConstants.NEW_LOAN_LIMIT);
+
+    String loanNumber =
+        "LN-" + UUID.randomUUID().toString().substring(0, 13).replace("-", "").toUpperCase();
+    newLoan.setLoanNumber(loanNumber);
+
+    newLoan.setCustomerMobileNumber(mobileNumber);
+    newLoan.setLoanType(Loans.LoanType.PERSONAL);
+
+    newLoan.setTotalLoan(new BigDecimal("100000.00"));
+    newLoan.setAmountPaid(BigDecimal.ZERO);
+    newLoan.setOutstandingAmount(newLoan.getTotalLoan());
+
+    newLoan.setCreatedBy("SYSTEM");
+    newLoan.setCreatedAt(LocalDateTime.now());
+
     return newLoan;
   }
 
-  public LoansDto fetchLoan(String mobileNumber) {
+  public LoansDto fetchLoan(String loanNumber) {
     Loans loans =
         loansRepository
-            .findByMobileNumber(mobileNumber)
-            .orElseThrow(() -> new ResourceNotFoundException("Loan", "mobileNumber", mobileNumber));
-    return LoansMapper.mapToLoansDto(loans, new LoansDto());
+            .findByLoanNumber(loanNumber)
+            .orElseThrow(() -> new ResourceNotFoundException("Loan", "mobileNumber", loanNumber));
+    return LoansMapper.mapToLoansDto(loans);
   }
 
   public boolean updateLoan(LoansDto loansDto) {
     Loans loans =
         loansRepository
-            .findByLoanNumber(loansDto.getLoanNumber())
+            .findByLoanNumber(loansDto.loanNumber())
             .orElseThrow(
-                () ->
-                    new ResourceNotFoundException("Loan", "LoanNumber", loansDto.getLoanNumber()));
-    LoansMapper.mapToLoans(loansDto, loans);
+                () -> new ResourceNotFoundException("Loan", "LoanNumber", loansDto.loanNumber()));
+    LoansMapper.mapToLoansEntity(loansDto);
     loansRepository.save(loans);
     return true;
   }
 
-  public boolean deleteLoan(String mobileNumber) {
+  public boolean deleteLoan(String loanNumber) {
     Loans loans =
         loansRepository
-            .findByMobileNumber(mobileNumber)
-            .orElseThrow(() -> new ResourceNotFoundException("Loan", "mobileNumber", mobileNumber));
+            .findByLoanNumber(loanNumber)
+            .orElseThrow(() -> new ResourceNotFoundException("Loan", "loanNumber", loanNumber));
     loansRepository.deleteById(loans.getLoanId());
     return true;
   }

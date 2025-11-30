@@ -1,61 +1,70 @@
 package com.bank.accounts.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Accounts extends BaseEntity {
-  @Column(name = "customer_id")
-  private Long customerId;
-
   @Id
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
+  @Column(name = "accounts_id")
+  private String accountsId;
+
+  @Column(name = "customer_id")
+  private String customerId;
+
   @Column(name = "account_number")
-  private Long accountNumber;
+  private String accountNumber;
 
   @Column(name = "account_type")
-  private String accountType;
+  @Enumerated(EnumType.STRING)
+  private AccountType accountType = AccountType.CHECKING;
 
-  @Column(name = "mobile_number")
-  private String mobileNumber;
-
-  @Column(name = "branch_adress")
+  @Column(name = "branch_address")
   private String branchAddress;
 
-  public Long getCustomerId() {
+  public enum AccountType {
+    ACTIVE,
+    INACTIVE,
+    FIXED,
+    CHECKING
+  }
+
+  public String getAccountsId() {
+    return accountsId;
+  }
+
+  public void setAccountsId(String accountsId) {
+    this.accountsId = accountsId;
+  }
+
+  public String getCustomerId() {
     return customerId;
   }
 
-  public void setCustomerId(Long customerId) {
+  public void setCustomerId(String customerId) {
     this.customerId = customerId;
   }
 
-  public Long getAccountNumber() {
+  public String getAccountNumber() {
     return accountNumber;
   }
 
-  public void setAccountNumber(Long accountNumber) {
+  public void setAccountNumber(String accountNumber) {
     this.accountNumber = accountNumber;
   }
 
-  public String getAccountType() {
+  public AccountType getAccountType() {
     return accountType;
   }
 
-  public void setAccountType(String accountType) {
+  public void setAccountType(AccountType accountType) {
     this.accountType = accountType;
-  }
-
-  public String getMobileNumber() {
-    return mobileNumber;
-  }
-
-  public void setMobileNumber(String mobileNumber) {
-    this.mobileNumber = mobileNumber;
   }
 
   public String getBranchAddress() {

@@ -1,55 +1,67 @@
 package com.bank.loans.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Loans extends BaseEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long loanId;
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
+  @Column(name = "loans_id")
+  private String loanId;
 
-  private String mobileNumber;
+  @Column(name = "customer_mobile_number")
+  private String customerMobileNumber;
+
+  @Column(name = "loan_number")
   private String loanNumber;
-  private String loanType;
-  private int totalLoan;
-  private int amountPaid;
-  private int outstandingAmount;
 
-  public Loans() {}
+  @Column(name = "loan_type")
+  @Enumerated(EnumType.STRING)
+  private LoanType loanType = LoanType.PERSONAL;
 
-  public Loans(
-      String mobileNumber,
-      String loanNumber,
-      String loanType,
-      int totalLoan,
-      int amountPaid,
-      int outstandingAmount) {
-    this.mobileNumber = mobileNumber;
-    this.loanNumber = loanNumber;
-    this.loanType = loanType;
-    this.totalLoan = totalLoan;
-    this.amountPaid = amountPaid;
-    this.outstandingAmount = outstandingAmount;
+  @Column(name = "total_loan")
+  private BigDecimal totalLoan;
+
+  @Column(name = "amount_paid")
+  private BigDecimal amountPaid;
+
+  @Column(name = "outstanding_amount")
+  private BigDecimal outstandingAmount;
+
+  public enum LoanType {
+    PERSONAL, // Bireysel ihtiyaç kredisi
+    MORTGAGE, // Konut kredisi
+    AUTO, // Araç kredisi
+    STUDENT, // Öğrenci / eğitim kredisi
+    BUSINESS, // Ev ipoteğine bağlı ek kredi
+    PAYDAY, // Tarım kredisi
+    CREDIT_CARD // Borç birleştirme kredisi
   }
 
-  public Long getLoanId() {
+  public String getLoanId() {
     return loanId;
   }
 
-  public void setLoanId(Long loanId) {
+  public void setLoanId(String loanId) {
     this.loanId = loanId;
   }
 
-  public String getMobileNumber() {
-    return mobileNumber;
+  public String getCustomerMobileNumber() {
+    return customerMobileNumber;
   }
 
-  public void setMobileNumber(String mobileNumber) {
-    this.mobileNumber = mobileNumber;
+  public void setCustomerMobileNumber(String customerMobileNumber) {
+    this.customerMobileNumber = customerMobileNumber;
   }
 
   public String getLoanNumber() {
@@ -60,58 +72,35 @@ public class Loans extends BaseEntity {
     this.loanNumber = loanNumber;
   }
 
-  public String getLoanType() {
+  public LoanType getLoanType() {
     return loanType;
   }
 
-  public void setLoanType(String loanType) {
+  public void setLoanType(LoanType loanType) {
     this.loanType = loanType;
   }
 
-  public int getTotalLoan() {
+  public BigDecimal getTotalLoan() {
     return totalLoan;
   }
 
-  public void setTotalLoan(int totalLoan) {
+  public void setTotalLoan(BigDecimal totalLoan) {
     this.totalLoan = totalLoan;
   }
 
-  public int getAmountPaid() {
+  public BigDecimal getAmountPaid() {
     return amountPaid;
   }
 
-  public void setAmountPaid(int amountPaid) {
+  public void setAmountPaid(BigDecimal amountPaid) {
     this.amountPaid = amountPaid;
   }
 
-  public int getOutstandingAmount() {
+  public BigDecimal getOutstandingAmount() {
     return outstandingAmount;
   }
 
-  public void setOutstandingAmount(int outstandingAmount) {
+  public void setOutstandingAmount(BigDecimal outstandingAmount) {
     this.outstandingAmount = outstandingAmount;
-  }
-
-  @Override
-  public String toString() {
-    return "Loans{"
-        + "loanId="
-        + loanId
-        + ", mobileNumber='"
-        + mobileNumber
-        + '\''
-        + ", loanNumber='"
-        + loanNumber
-        + '\''
-        + ", loanType='"
-        + loanType
-        + '\''
-        + ", totalLoan="
-        + totalLoan
-        + ", amountPaid="
-        + amountPaid
-        + ", outstandingAmount="
-        + outstandingAmount
-        + '}';
   }
 }
