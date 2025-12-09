@@ -4,9 +4,9 @@ services:
 
   # 1) Accounts DB
   accountsdb:
-    container_name: accountsdb
+    container_name: accountsdb-prod
     ports:
-      - "3307:3306"
+      - "3310:3306"
     environment:
       MYSQL_DATABASE: accountsdb
     extends:
@@ -15,9 +15,9 @@ services:
 
   # 2) Cards DB
   cardsdb:
-    container_name: cardsdb
+    container_name: cardsdb-prod
     ports:
-      - "3308:3306"
+      - "3311:3306"
     environment:
       MYSQL_DATABASE: cardsdb
     extends:
@@ -26,9 +26,9 @@ services:
 
   # 3) Loans DB
   loansdb:
-    container_name: loansdb
+    container_name: loansdb-prod
     ports:
-      - "3309:3306"
+      - "3312:3306"
     environment:
       MYSQL_DATABASE: loansdb
     extends:
@@ -39,12 +39,12 @@ services:
   # 4) CONFIG SERVER
   configserver:
     image: gunesng022/configserver:docker
-    container_name: configserver-ms
+    container_name: configserver-ms-prod
     extends:
       file: common-config.yml
       service: microservice-configserver-config
     ports:
-      - "8071:8071"
+      - "8072:8071"
     healthcheck:
       test: "curl --fail --silent http://localhost:8071/actuator/health/readiness | grep UP || exit 1"
       interval: 10s
@@ -56,7 +56,7 @@ services:
   # 5) ACCOUNTS SERVICE
   accounts:
     image: gunesng022/accounts
-    container_name: accounts-ms
+    container_name: accounts-ms-prod
     ports:
       - "8080:8080"
     environment:
@@ -74,7 +74,7 @@ services:
   # 6) LOANS SERVICE
   loans:
     image: gunesng022/loans
-    container_name: loans-ms
+    container_name: loans-ms-prod
     ports:
       - "8090:8090"
     environment:
@@ -92,7 +92,7 @@ services:
   # 7) CARDS SERVICE
   cards:
     image: gunesng022/cards
-    container_name: cards-ms
+    container_name: cards-ms-prod
     ports:
       - "9000:9000"
     environment:
