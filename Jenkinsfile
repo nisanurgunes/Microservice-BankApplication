@@ -11,11 +11,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                script {
-                    docker.image('maven:3.9.6-eclipse-temurin-17').inside('-v /root/.m2:/root/.m2') {
-                        sh 'mvn clean package -DskipTests'
-                    }
-                }
+                sh """
+                    docker run --rm \
+                        -v \$PWD:/app \
+                        -w /app \
+                        maven:3.9.6-eclipse-temurin-17 \
+                        mvn clean package -DskipTests
+                """
             }
         }
 
@@ -29,8 +31,8 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                withCredentials([string(credentialsId: "dockerhub-token", variable: "TOKEN")]) {
-                    sh "echo $TOKEN | docker login -u gunesng022 --password-stdin"
+                withCredentials([string(credentialsId: 'dockerhub-token', variable: 'TOKEN')]) {
+                    sh "echo \$TOKEN | docker login -u gunesng022 --password-stdin"
                     sh "docker push gunesng022/accounts"
                     sh "docker push gunesng022/cards"
                     sh "docker push gunesng022/loans"
