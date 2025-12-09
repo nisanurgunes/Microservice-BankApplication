@@ -29,3 +29,10 @@ services:
   microservice-configserver-config:
     extends:
       service: network-deploy-service
+    environment:
+      SPRING_PROFILES_ACTIVE: git       # ❗ zorunlu — configserver git modunda çalışacak
+      SPRING_CLOUD_CONFIG_SERVER_GIT_URI: "https://github.com/nisanurgunes/Microservice-BankApplication.git"
+      SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS: "config-repo"
+      SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT_LABEL: new-master
+      SPRING_CLOUD_CONFIG_SERVER_GIT_CLONE_ON_START: "true"
+      SPRING_CLOUD_CONFIG_SERVER_GIT_FORCE_PULL: "true"

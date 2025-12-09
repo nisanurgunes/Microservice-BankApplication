@@ -28,3 +28,5 @@ accounts:
   onCallSupport:
     - (666) 265-3765
     - (666) 734-8371
+address:
+  defaultBranchAddress: "123 Main St, Anytown, USA"
