@@ -1,7 +1,8 @@
 services:
+
   network-deploy-service:
     networks:
-      - bank   # Düzeltilmiş hali
+      - bank
 
   microservice-db-config:
     extends:
@@ -10,7 +11,7 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 10s
-      retries: 10
+      retries: 10s
       interval: 10s
       start_period: 10s
     environment:
@@ -24,12 +25,7 @@ services:
         limits:
           memory: 700m
 
-  # BU SADECE MİKROSERVİSLER İÇİN
+  # Config Server için DB bağlantısı gerekmez!
   microservice-configserver-config:
     extends:
-      service: microservice-base-config
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      service: network-deploy-service

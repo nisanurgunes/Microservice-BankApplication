@@ -6,15 +6,15 @@ spring:
   cloud:
     config:
       server:
-        #native:
-         # search-locations: "file:///C:/Users/gunes/Desktop/Users/microservice/Documents/config"
         git:
           uri: "https://github.com/nisanurgunes/Microservice-BankApplication.git"
+          search-paths: "config-repo"
           default-label: new-master
-          timeout: 5
           clone-on-start: true
+          timeout: 5
           force-pull: true
-          search-paths: config
+          refresh-rate: 0
+
 
 management:
   endpoints:

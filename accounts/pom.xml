@@ -124,7 +124,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>gunesng022/${project.artifactId}:accounts</image>
+						<image>gunesng022/${project.artifactId}:latest</image>
 					</to>
 				</configuration>
 			</plugin>

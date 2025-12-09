@@ -33,11 +33,11 @@ public class Customer extends BaseEntity {
     this.customerId = customerId;
   }
 
-  public String getName() {
+  public String getCustomerName() {
     return customerName;
   }
 
-  public void setName(String customerName) {
+  public void setCustomerName(String customerName) {
     this.customerName = customerName;
   }
 

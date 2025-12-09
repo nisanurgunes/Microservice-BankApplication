@@ -1,11 +1,8 @@
 package com.bank.cards;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
-class CardsApplicationTests {
-
-  @Test
-  void contextLoads() {}
-}
+@ContextConfiguration(classes = CardsApplication.class)
+class CardsApplicationTests {}

@@ -66,7 +66,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>gunesng022/${project.artifactId}:configserver</image>
+						<image>gunesng022/${project.artifactId}configserver:latest</image>
 					</to>
 				</configuration>
 			</plugin>

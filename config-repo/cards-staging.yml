@@ -1,0 +1,29 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: cards
+  datasource:
+    url: jdbc:mysql://cardsdb:3306/cardsdb
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+build:
+  version: "2.0"
+
+cards:
+  message: "Welcome to Microservice cards related QA APIs "
+  contactDetails:
+    name: "Cherryl Pankaj - QA Lead"
+    email: "cherryl@microservice.com"
+  onCallSupport:
+    - (310) 875-4367
+    - (201) 236-1267

@@ -8,7 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LoansRepository extends JpaRepository<Loans, String> {
 
-  Optional<Loans> findByMobileNumber(String mobileNumber);
-
   Optional<Loans> findByLoanNumber(String loanNumber);
 }

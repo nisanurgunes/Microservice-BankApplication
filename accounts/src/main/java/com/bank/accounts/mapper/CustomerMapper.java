@@ -10,12 +10,12 @@ public class CustomerMapper {
     AccountsDto accountsDto = AccountsMapper.mapToAccountsDto(accounts);
 
     return new CustomerDto(
-        customer.getName(), customer.getCustomerEmail(), customer.getCustomerMobileNumber());
+        customer.getCustomerName(), customer.getCustomerEmail(), customer.getCustomerMobileNumber());
   }
 
   public static Customer mapToCustomerEntity(CustomerDto dto) {
     Customer customer = new Customer();
-    customer.setName(dto.customerName());
+    customer.setCustomerName(dto.customerName());
     customer.setCustomerEmail(dto.customerEmail());
     customer.setCustomerMobileNumber(dto.customerMobileNumber());
     return customer;
