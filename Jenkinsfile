@@ -17,10 +17,10 @@ pipeline {
         stage('Build with Maven') {
             steps {
                 sh """
-               docker run --rm \
-                           -v $WORKSPACE/bankapplicationn:/app \
-                           -w /app \
-                           maven:3.9.6-eclipse-temurin-17 mvn clean package -DskipTests
+                docker run --rm \
+                    -v $WORKSPACE/bankapplicationn:/app \
+                    -w /app \
+                    ${MAVEN_IMAGE} mvn clean package -DskipTests
                 """
             }
         }
@@ -28,9 +28,9 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 sh """
-                    docker build -t ${DOCKERHUB_REPO}/accounts ./accounts
-                    docker build -t ${DOCKERHUB_REPO}/cards ./cards
-                    docker build -t ${DOCKERHUB_REPO}/loans ./loans
+                    docker build -t ${DOCKERHUB_REPO}/accounts:latest $WORKSPACE/bankapplicationn/accounts
+                    docker build -t ${DOCKERHUB_REPO}/cards:latest $WORKSPACE/bankapplicationn/cards
+                    docker build -t ${DOCKERHUB_REPO}/loans:latest $WORKSPACE/bankapplicationn/loans
                 """
             }
         }
@@ -44,13 +44,12 @@ pipeline {
                         passwordVariable: 'PASS'
                     )
                 ]) {
-
                     sh "echo \$PASS | docker login -u \$USER --password-stdin"
 
                     sh """
-                        docker push ${DOCKERHUB_REPO}/accounts
-                        docker push ${DOCKERHUB_REPO}/cards
-                        docker push ${DOCKERHUB_REPO}/loans
+                        docker push ${DOCKERHUB_REPO}/accounts:latest
+                        docker push ${DOCKERHUB_REPO}/cards:latest
+                        docker push ${DOCKERHUB_REPO}/loans:latest
                     """
                 }
             }
