@@ -14,25 +14,19 @@ pipeline {
             }
         }
 
-        stage('Find Project Root') {
+        stage('Verify Project Structure') {
             steps {
-                script {
-                    echo "WORKSPACE = ${env.WORKSPACE}"
-                    sh "ls -R ${WORKSPACE}"
+                sh """
+                    echo 'Workspace: ' $WORKSPACE
+                    ls -R $WORKSPACE
+                """
 
-                    // pom.xml nerede diye kontrol et
-                    def found = sh(
-                        script: "find ${WORKSPACE} -maxdepth 3 -name pom.xml | grep bankapplicationn/pom.xml || true",
-                        returnStdout: true
-                    ).trim()
-
-                    if(found == "") {
-                        error("❌ Parent pom.xml bulunamadı! Jenkins proje dizinini yanlış check-out etmiş.")
-                    }
-
-                    env.PROJECT_ROOT = found.replace("/pom.xml","")
-                    echo "📌 Project root found at: ${env.PROJECT_ROOT}"
-                }
+                sh """
+                    if [ ! -f "$WORKSPACE/pom.xml" ]; then
+                        echo '❌ Parent pom.xml bulunamadı!'
+                        exit 1
+                    fi
+                """
             }
         }
 
@@ -40,9 +34,9 @@ pipeline {
             steps {
                 sh """
                     docker run --rm \
-                        -v ${PROJECT_ROOT}:/app \
-                        -w /app \
-                        ${MAVEN_IMAGE} mvn -q -DskipTests clean package
+                       -v $WORKSPACE:/app \
+                       -w /app \
+                       $MAVEN_IMAGE mvn -B clean package -DskipTests
                 """
             }
         }
@@ -50,9 +44,9 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 sh """
-                    docker build -t ${DOCKERHUB_REPO}/accounts ${PROJECT_ROOT}/accounts
-                    docker build -t ${DOCKERHUB_REPO}/cards ${PROJECT_ROOT}/cards
-                    docker build -t ${DOCKERHUB_REPO}/loans ${PROJECT_ROOT}/loans
+                    docker build -t ${DOCKERHUB_REPO}/accounts ./accounts
+                    docker build -t ${DOCKERHUB_REPO}/cards ./cards
+                    docker build -t ${DOCKERHUB_REPO}/loans ./loans
                 """
             }
         }
@@ -67,7 +61,6 @@ pipeline {
                     )
                 ]) {
                     sh "echo \$PASS | docker login -u \$USER --password-stdin"
-
                     sh """
                         docker push ${DOCKERHUB_REPO}/accounts
                         docker push ${DOCKERHUB_REPO}/cards
