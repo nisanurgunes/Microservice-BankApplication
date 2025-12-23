@@ -18,7 +18,7 @@ pipeline {
             steps {
                 sh """
                 docker run --rm \
-                    -v $WORKSPACE/bankapplicationn:/app \
+                    -v $WORKSPACE:/app \
                     -w /app \
                     ${MAVEN_IMAGE} mvn clean package -DskipTests
                 """
@@ -28,9 +28,9 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 sh """
-                    docker build -t ${DOCKERHUB_REPO}/accounts:latest $WORKSPACE/bankapplicationn/accounts
-                    docker build -t ${DOCKERHUB_REPO}/cards:latest $WORKSPACE/bankapplicationn/cards
-                    docker build -t ${DOCKERHUB_REPO}/loans:latest $WORKSPACE/bankapplicationn/loans
+                    docker build -t ${DOCKERHUB_REPO}/accounts:latest $WORKSPACE/accounts
+                    docker build -t ${DOCKERHUB_REPO}/cards:latest $WORKSPACE/cards
+                    docker build -t ${DOCKERHUB_REPO}/loans:latest $WORKSPACE/loans
                 """
             }
         }
