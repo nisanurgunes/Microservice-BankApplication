@@ -9,19 +9,14 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Maven') {
             steps {
-                sh """
-                    docker run --rm \
-                        -v \$PWD:/app \
-                        -w /app \
-                        maven:3.9.6-eclipse-temurin-17 \
-                        mvn clean package -DskipTests
-                """
+                sh 'mvn -v'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Docker Images') {
             steps {
                 sh 'docker build -t gunesng022/accounts ./accounts'
                 sh 'docker build -t gunesng022/cards ./cards'
@@ -29,13 +24,17 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Push Docker Images') {
             steps {
-                withCredentials([string(credentialsId: 'dockerhub-token', variable: 'TOKEN')]) {
-                    sh "echo \$TOKEN | docker login -u gunesng022 --password-stdin"
-                    sh "docker push gunesng022/accounts"
-                    sh "docker push gunesng022/cards"
-                    sh "docker push gunesng022/loans"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-token',
+                                                 usernameVariable: 'USER',
+                                                 passwordVariable: 'PASS')]) {
+
+                    sh "echo $PASS | docker login -u $USER --password-stdin"
+
+                    sh 'docker push gunesng022/accounts'
+                    sh 'docker push gunesng022/cards'
+                    sh 'docker push gunesng022/loans'
                 }
             }
         }
