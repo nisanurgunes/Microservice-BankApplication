@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_REPO = "gunesng022"
-        MAVEN_IMAGE   = "maven:3.9.6-eclipse-temurin-17"
+        MAVEN_IMAGE = "maven:3.9.6-eclipse-temurin-17"
     }
 
     stages {
@@ -14,35 +14,45 @@ pipeline {
             }
         }
 
-        stage('List Workspace') {
+        stage('Find Project Root') {
             steps {
-                echo "WORKSPACE = ${WORKSPACE}"
-                sh "ls -R ${WORKSPACE}"
+                script {
+                    echo "WORKSPACE = ${env.WORKSPACE}"
+                    sh "ls -R ${WORKSPACE}"
+
+                    // pom.xml nerede diye kontrol et
+                    def found = sh(
+                        script: "find ${WORKSPACE} -maxdepth 3 -name pom.xml | grep bankapplicationn/pom.xml || true",
+                        returnStdout: true
+                    ).trim()
+
+                    if(found == "") {
+                        error("❌ Parent pom.xml bulunamadı! Jenkins proje dizinini yanlış check-out etmiş.")
+                    }
+
+                    env.PROJECT_ROOT = found.replace("/pom.xml","")
+                    echo "📌 Project root found at: ${env.PROJECT_ROOT}"
+                }
             }
         }
 
         stage('Build with Maven') {
             steps {
-                script {
-                    // POM gerçekten neredeyse ona göre mount edeceğiz
-                    echo "Trying Maven build... (we will adjust path after listing)"
-
-                    sh """
-                        docker run --rm \
-                            -v ${WORKSPACE}:/app \
-                            -w /app \
-                            ${MAVEN_IMAGE} mvn -q -DskipTests clean package || true
-                    """
-                }
+                sh """
+                    docker run --rm \
+                        -v ${PROJECT_ROOT}:/app \
+                        -w /app \
+                        ${MAVEN_IMAGE} mvn -q -DskipTests clean package
+                """
             }
         }
 
         stage('Build Docker Images') {
             steps {
                 sh """
-                    docker build -t ${DOCKERHUB_REPO}/accounts ./accounts
-                    docker build -t ${DOCKERHUB_REPO}/cards ./cards
-                    docker build -t ${DOCKERHUB_REPO}/loans ./loans
+                    docker build -t ${DOCKERHUB_REPO}/accounts ${PROJECT_ROOT}/accounts
+                    docker build -t ${DOCKERHUB_REPO}/cards ${PROJECT_ROOT}/cards
+                    docker build -t ${DOCKERHUB_REPO}/loans ${PROJECT_ROOT}/loans
                 """
             }
         }
@@ -56,7 +66,7 @@ pipeline {
                         passwordVariable: 'PASS'
                     )
                 ]) {
-                    sh "echo ${PASS} | docker login -u ${USER} --password-stdin"
+                    sh "echo \$PASS | docker login -u \$USER --password-stdin"
 
                     sh """
                         docker push ${DOCKERHUB_REPO}/accounts
