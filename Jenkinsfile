@@ -17,11 +17,10 @@ pipeline {
         stage('Build with Maven') {
             steps {
                 sh """
-                    docker run --rm \
-                        -v \$PWD:/app \
-                        -w /app \
-                        ${MAVEN_IMAGE} \
-                        mvn clean package -DskipTests
+               docker run --rm \
+                           -v $WORKSPACE/bankapplicationn:/app \
+                           -w /app \
+                           maven:3.9.6-eclipse-temurin-17 mvn clean package -DskipTests
                 """
             }
         }
