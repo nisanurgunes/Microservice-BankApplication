@@ -52,8 +52,30 @@ services:
       retries: 10
       start_period: 10s
 
+  # 5) EUREKA SERVER
+  eurekaserver:
+    image: gunesng022/eurekaserver:docker
+    container_name: eurekaserver-ms-prod
+    ports:
+      - "8070:8070"
+    environment:
+      SPRING_APPLICATION_NAME: eurekaserver
+      SPRING_PROFILES_ACTIVE: prod
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    depends_on:
+      configserver:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
 
-  # 5) ACCOUNTS SERVICE
+  # 6) ACCOUNTS SERVICE
   accounts:
     image: gunesng022/accounts
     container_name: accounts-ms-prod
@@ -66,12 +88,13 @@ services:
         condition: service_healthy
       configserver:
         condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     extends:
       file: common-config.yml
       service: microservice-base-config
 
-
-  # 6) LOANS SERVICE
+  # 7) LOANS SERVICE
   loans:
     image: gunesng022/loans
     container_name: loans-ms-prod
@@ -84,12 +107,13 @@ services:
         condition: service_healthy
       configserver:
         condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     extends:
       file: common-config.yml
       service: microservice-base-config
 
-
-  # 7) CARDS SERVICE
+  # 8) CARDS SERVICE
   cards:
     image: gunesng022/cards
     container_name: cards-ms-prod
@@ -101,6 +125,8 @@ services:
       cardsdb:
         condition: service_healthy
       configserver:
+        condition: service_healthy
+      eurekaserver:
         condition: service_healthy
     extends:
       file: common-config.yml

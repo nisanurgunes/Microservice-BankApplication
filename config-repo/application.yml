@@ -12,3 +12,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://eurekaserver:8070/eureka/}

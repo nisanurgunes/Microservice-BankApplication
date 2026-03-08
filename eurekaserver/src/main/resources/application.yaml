@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: eurekaserver
+  config:
+    import: "optional:configserver:http://configserver:8071"
+server:
+  port: 8070
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    readinessState:
+      enabled: true
+    livenessState:
+      enabled: true
