@@ -10,7 +10,6 @@ import com.bank.accounts.mapper.AccountsMapper;
 import com.bank.accounts.mapper.CustomerMapper;
 import com.bank.accounts.repository.AccountsRepository;
 import com.bank.accounts.repository.CustomerRepository;
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -84,22 +83,15 @@ public class AccountService {
         customerRepository
             .findByCustomerId(customerId)
             .orElseThrow(() -> new ResourceNotFoundException("Customer", "customerId", customerId));
-    Optional<Accounts> accounts =
-        Optional.ofNullable(
-            accountsRepository
-                .findByCustomerId(customer.getCustomerId())
-                .orElseThrow(
-                    () -> new ResourceNotFoundException("Account", "customerId", customerId)));
-    if (customerDto != null && accounts.get().getAccountType() != Accounts.AccountType.INACTIVE) {
-      Customer updateCustomer =
-          customerRepository
-              .findByCustomerId(customer.getCustomerId())
-              .orElseThrow(
-                  () ->
-                      new ResourceNotFoundException(
-                          "Account", "accountNumber", customer.getCustomerId()));
-      CustomerMapper.mapToCustomerEntity(customerDto);
-      customerRepository.save(updateCustomer);
+    Accounts account =
+        accountsRepository
+            .findByCustomerId(customer.getCustomerId())
+            .orElseThrow(() -> new ResourceNotFoundException("Account", "customerId", customerId));
+    if (customerDto != null && account.getAccountType() != Accounts.AccountType.INACTIVE) {
+      customer.setCustomerName(customerDto.customerName());
+      customer.setCustomerEmail(customerDto.customerEmail());
+      customer.setCustomerMobileNumber(customerDto.customerMobileNumber());
+      customerRepository.save(customer);
       isUpdated = true;
     }
     return isUpdated;

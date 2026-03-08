@@ -7,12 +7,12 @@ public class CardsMapper {
 
   public static CardsDto mapToCardsDto(Cards cards) {
     return new CardsDto(
+        cards.getCustomerMobileNumber(),
         cards.getCardNumber(),
         cards.getCardType().name(),
-        cards.getCustomerMobileNumber(),
         cards.getTotalLimit(),
-        cards.getAvailableAmount(),
-        cards.getAmountUsed());
+        cards.getAmountUsed(),
+        cards.getAvailableAmount());
   }
 
   public static Cards mapToCardsEntity(CardsDto cardsDto) {

@@ -69,9 +69,9 @@ public class LoansController {
 
   @DeleteMapping("/delete")
   public ResponseEntity<ResponseDto> deleteLoanDetails(
-      @RequestParam @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
-          String mobileNumber) {
-    boolean isDeleted = loansService.deleteLoan(mobileNumber);
+      @RequestParam @Pattern(regexp = "(^$|[0-9]{12})", message = "Loan number must be 12 digits")
+          String loanNumber) {
+    boolean isDeleted = loansService.deleteLoan(loanNumber);
     if (isDeleted) {
       return ResponseEntity.status(HttpStatus.OK)
           .body(new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));

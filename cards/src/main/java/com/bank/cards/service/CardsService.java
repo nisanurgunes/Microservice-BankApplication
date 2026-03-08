@@ -10,7 +10,7 @@ import com.bank.cards.repository.CardsRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +32,8 @@ public class CardsService {
   private Cards createNewCard(String mobileNumber) {
     Cards newCard = new Cards();
 
-    long number = 1_0000_0000_0000_0000L + Math.abs(new Random().nextLong());
-    newCard.setCardNumber(Long.toString(number).substring(0, 16));
+    long number = ThreadLocalRandom.current().nextLong(100_000_000_000L, 1_000_000_000_000L);
+    newCard.setCardNumber(Long.toString(number));
 
     newCard.setCustomerMobileNumber(mobileNumber);
     newCard.setCardType(Cards.CardType.CREDIT);
@@ -62,7 +62,11 @@ public class CardsService {
             .findByCardNumber(cardsDto.cardNumber())
             .orElseThrow(
                 () -> new ResourceNotFoundException("Card", "CardNumber", cardsDto.cardNumber()));
-    CardsMapper.mapToCardsEntity(cardsDto);
+    cards.setCustomerMobileNumber(cardsDto.mobileNumber());
+    cards.setCardType(Cards.CardType.valueOf(cardsDto.cardType().toUpperCase()));
+    cards.setTotalLimit(cardsDto.totalLimit());
+    cards.setAmountUsed(cardsDto.amountUsed());
+    cards.setAvailableAmount(cardsDto.availableAmount());
     cardsRepository.save(cards);
     return true;
   }

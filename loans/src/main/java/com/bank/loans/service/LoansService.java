@@ -17,12 +17,11 @@ public class LoansService {
 
   private LoansRepository loansRepository;
 
-  public Loans createNewLoan(String mobileNumber) {
+  public void createNewLoan(String mobileNumber) {
 
     Loans newLoan = new Loans();
 
-    String loanNumber =
-        "LN-" + UUID.randomUUID().toString().substring(0, 13).replace("-", "").toUpperCase();
+    String loanNumber = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
     newLoan.setLoanNumber(loanNumber);
 
     newLoan.setCustomerMobileNumber(mobileNumber);
@@ -35,14 +34,14 @@ public class LoansService {
     newLoan.setCreatedBy("SYSTEM");
     newLoan.setCreatedAt(LocalDateTime.now());
 
-    return newLoan;
+    loansRepository.save(newLoan);
   }
 
   public LoansDto fetchLoan(String loanNumber) {
     Loans loans =
         loansRepository
             .findByLoanNumber(loanNumber)
-            .orElseThrow(() -> new ResourceNotFoundException("Loan", "mobileNumber", loanNumber));
+            .orElseThrow(() -> new ResourceNotFoundException("Loan", "loanNumber", loanNumber));
     return LoansMapper.mapToLoansDto(loans);
   }
 
@@ -52,7 +51,11 @@ public class LoansService {
             .findByLoanNumber(loansDto.loanNumber())
             .orElseThrow(
                 () -> new ResourceNotFoundException("Loan", "LoanNumber", loansDto.loanNumber()));
-    LoansMapper.mapToLoansEntity(loansDto);
+    loans.setCustomerMobileNumber(loansDto.customerMobileNumber());
+    loans.setLoanType(Loans.LoanType.valueOf(loansDto.loanType().toUpperCase()));
+    loans.setTotalLoan(loansDto.totalLoan());
+    loans.setAmountPaid(loansDto.amountPaid());
+    loans.setOutstandingAmount(loansDto.outstandingAmount());
     loansRepository.save(loans);
     return true;
   }

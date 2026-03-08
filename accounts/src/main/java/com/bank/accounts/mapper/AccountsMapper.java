@@ -12,7 +12,7 @@ public class AccountsMapper {
   public static Accounts mapToAccountsEntity(AccountsDto accountsDto) {
     Accounts accounts = new Accounts();
     accounts.setAccountNumber(accountsDto.accountNumber());
-    accounts.setAccountType(Accounts.AccountType.valueOf(accounts.getAccountType().name()));
+    accounts.setAccountType(Accounts.AccountType.valueOf(accountsDto.accountType().toUpperCase()));
     accounts.setBranchAddress(accountsDto.branchAddress());
     return accounts;
   }
