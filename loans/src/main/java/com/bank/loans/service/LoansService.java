@@ -45,6 +45,14 @@ public class LoansService {
     return LoansMapper.mapToLoansDto(loans);
   }
 
+  public LoansDto fetchLoanByMobileNumber(String mobileNumber) {
+    Loans loans =
+        loansRepository
+            .findByCustomerMobileNumber(mobileNumber)
+            .orElseThrow(() -> new ResourceNotFoundException("Loan", "mobileNumber", mobileNumber));
+    return LoansMapper.mapToLoansDto(loans);
+  }
+
   public boolean updateLoan(LoansDto loansDto) {
     Loans loans =
         loansRepository

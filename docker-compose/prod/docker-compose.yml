@@ -38,7 +38,7 @@ services:
 
   # 4) CONFIG SERVER
   configserver:
-    image: gunesng022/configserver:docker
+    image: gunesng022/configserver:s8
     container_name: configserver-ms-prod
     extends:
       file: common-config.yml
@@ -54,7 +54,7 @@ services:
 
   # 5) EUREKA SERVER
   eurekaserver:
-    image: gunesng022/eurekaserver:docker
+    image: gunesng022/eurekaserver:s8
     container_name: eurekaserver-ms-prod
     ports:
       - "8070:8070"
@@ -77,7 +77,7 @@ services:
 
   # 6) ACCOUNTS SERVICE
   accounts:
-    image: gunesng022/accounts
+    image: gunesng022/accounts:s8
     container_name: accounts-ms-prod
     ports:
       - "8080:8080"
@@ -96,7 +96,7 @@ services:
 
   # 7) LOANS SERVICE
   loans:
-    image: gunesng022/loans
+    image: gunesng022/loans:s8
     container_name: loans-ms-prod
     ports:
       - "8090:8090"
@@ -115,7 +115,7 @@ services:
 
   # 8) CARDS SERVICE
   cards:
-    image: gunesng022/cards
+    image: gunesng022/cards:s8
     container_name: cards-ms-prod
     ports:
       - "9000:9000"

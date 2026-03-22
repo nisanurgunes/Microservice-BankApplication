@@ -7,7 +7,7 @@
 		<groupId>com.bank</groupId>
 		<artifactId>bankapplicationn</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>eurekaserver</artifactId>
 	<name>eurekaserver</name>
@@ -76,7 +76,7 @@
 						<image>eclipse-temurin:21-jre</image>
 					</from>
 					<to>
-						<image>gunesng022/eurekaserver:docker</image>
+						<image>gunesng022/eurekaserver:s8</image>
 					</to>
 				</configuration>
 			</plugin>

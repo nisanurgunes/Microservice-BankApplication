@@ -9,7 +9,7 @@
 		<groupId>com.bank</groupId>
 		<artifactId>bankapplicationn</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>accounts</artifactId>
@@ -56,6 +56,10 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 
 		<!-- MySQL -->
@@ -139,7 +143,7 @@
 						<image>eclipse-temurin:21-jre</image>
 					</from>
 					<to>
-						<image>gunesng022/accounts:latest</image>
+						<image>gunesng022/accounts:s8</image>
 					</to>
 				</configuration>
 			</plugin>

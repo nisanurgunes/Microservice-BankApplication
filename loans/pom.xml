@@ -10,7 +10,7 @@
 		<groupId>com.bank</groupId>
 		<artifactId>bankapplicationn</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>loans</artifactId>
@@ -147,7 +147,7 @@
 						<image>eclipse-temurin:21-jre</image>
 					</from>
 					<to>
-						<image>gunesng022/loans:latest</image>
+						<image>gunesng022/loans:s8</image>
 					</to>
 				</configuration>
 			</plugin>

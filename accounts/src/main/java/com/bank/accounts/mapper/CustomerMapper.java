@@ -1,6 +1,7 @@
 package com.bank.accounts.mapper;
 
 import com.bank.accounts.dto.AccountsDto;
+import com.bank.accounts.dto.CustomerDetailsDto;
 import com.bank.accounts.dto.CustomerDto;
 import com.bank.accounts.entity.Accounts;
 import com.bank.accounts.entity.Customer;
@@ -10,7 +11,15 @@ public class CustomerMapper {
     AccountsDto accountsDto = AccountsMapper.mapToAccountsDto(accounts);
 
     return new CustomerDto(
-        customer.getCustomerName(), customer.getCustomerEmail(), customer.getCustomerMobileNumber());
+        customer.getCustomerName(),
+        customer.getCustomerEmail(),
+        customer.getCustomerMobileNumber());
+  }
+  public static CustomerDetailsDto mapToCustomerDetailsDto(Customer customer, CustomerDetailsDto customerDetailsDto) {
+    customerDetailsDto.setCustomerName(customer.getCustomerName());
+    customerDetailsDto.setCustomerEmail(customer.getCustomerEmail());
+    customerDetailsDto.setCustomerMobileNumber(customer.getCustomerMobileNumber());
+    return customerDetailsDto;
   }
 
   public static Customer mapToCustomerEntity(CustomerDto dto) {

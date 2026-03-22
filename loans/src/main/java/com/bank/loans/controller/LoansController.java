@@ -42,7 +42,8 @@ public class LoansController {
 
   @PostMapping("/create")
   public ResponseEntity<ResponseDto> createLoan(
-      @RequestParam @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
+      @RequestParam("mobileNumber")
+          @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
           String mobileNumber) {
     loansService.createNewLoan(mobileNumber);
     return ResponseEntity.status(HttpStatus.CREATED)
@@ -50,8 +51,20 @@ public class LoansController {
   }
 
   @GetMapping("/get-info")
-  public ResponseEntity<LoansDto> fetchLoanDetails(@RequestParam String loanNumber) {
+  public ResponseEntity<LoansDto> fetchLoanDetails(
+      @RequestParam("loanNumber")
+          @Pattern(regexp = "(^$|[0-9]{12})", message = "Loan number must be 12 digits")
+          String loanNumber) {
     LoansDto loansDto = loansService.fetchLoan(loanNumber);
+    return ResponseEntity.status(HttpStatus.OK).body(loansDto);
+  }
+
+  @GetMapping("/get-info-by-mobile")
+  public ResponseEntity<LoansDto> fetchLoanDetailsByMobileNumber(
+      @RequestParam("mobileNumber")
+          @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
+          String mobileNumber) {
+    LoansDto loansDto = loansService.fetchLoanByMobileNumber(mobileNumber);
     return ResponseEntity.status(HttpStatus.OK).body(loansDto);
   }
 
@@ -69,7 +82,8 @@ public class LoansController {
 
   @DeleteMapping("/delete")
   public ResponseEntity<ResponseDto> deleteLoanDetails(
-      @RequestParam @Pattern(regexp = "(^$|[0-9]{12})", message = "Loan number must be 12 digits")
+      @RequestParam("loanNumber")
+          @Pattern(regexp = "(^$|[0-9]{12})", message = "Loan number must be 12 digits")
           String loanNumber) {
     boolean isDeleted = loansService.deleteLoan(loanNumber);
     if (isDeleted) {

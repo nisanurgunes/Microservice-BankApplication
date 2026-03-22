@@ -26,6 +26,8 @@
         <lombok.version>1.18.30</lombok.version>
         <jib.version>3.4.1</jib.version>
         <springdoc.version>2.3.0</springdoc.version>
+        <spotless.version>2.44.0</spotless.version>
+        <google-java-format.version>1.17.0</google-java-format.version>
     </properties>
 
     <!-- ===== DEPENDENCY MANAGEMENT ===== -->
@@ -82,8 +84,35 @@
                     <version>${jib.version}</version>
                 </plugin>
 
+                <!-- Spotless formatting -->
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>${spotless.version}</version>
+                </plugin>
+
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <configuration>
+                    <java>
+                        <googleJavaFormat>
+                            <version>${google-java-format.version}</version>
+                        </googleJavaFormat>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <!-- Optional: Maven Central rewrite -->

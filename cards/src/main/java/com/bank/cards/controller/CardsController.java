@@ -43,7 +43,7 @@ public class CardsController {
   @PostMapping("/create")
   public ResponseEntity<ResponseDto> createCard(
       @Valid
-          @RequestParam
+          @RequestParam("mobileNumber")
           @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
           String mobileNumber) {
     cardsService.createCard(mobileNumber);
@@ -53,7 +53,8 @@ public class CardsController {
 
   @GetMapping("/fetch")
   public ResponseEntity<CardsDto> fetchCardDetails(
-      @RequestParam @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
+      @RequestParam("mobileNumber")
+          @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
           String mobileNumber) {
     CardsDto cardsDto = cardsService.fetchCard(mobileNumber);
     return ResponseEntity.status(HttpStatus.OK).body(cardsDto);
@@ -73,7 +74,8 @@ public class CardsController {
 
   @DeleteMapping("/delete")
   public ResponseEntity<ResponseDto> deleteCardDetails(
-      @RequestParam @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
+      @RequestParam("mobileNumber")
+          @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
           String mobileNumber) {
     boolean isDeleted = cardsService.deleteCard(mobileNumber);
     if (isDeleted) {
